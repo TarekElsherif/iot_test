@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link rel="stylesheet" type="text/css" href="led_ir.css">
+	</head>	
+	<body class = "blackBackground">
+	<button class = "blackButton",id = "myBtn"><img class = "imgSize", src="lights off	.jpg", id = "imageid"></button>
+
+	<div>
+		<h2 class = "txtStyle"> - IR -</h2>
+		<h2 class = "txtStyle" id="ir">Conneting...</h2>
+	</div>
+	<script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
+	<script>
+		// DOM
+		var button = document.querySelector('button'); 
+		var led_flag;
+		var ir_flag = 1;
+		// This is the channel name you are subscribing in remote-led.py
+		var channel = 'test';
+		// Init - Get your own keys at admin.pubnub.com
+		var p = PUBNUB.init({
+			subscribe_key: 'sub-c-875a6a50-d26d-11e5-b684-02ee2ddab7fe',
+	  		publish_key:   'pub-c-df137065-b5ca-4b1d-841a-3f547ec9b6f0'
+		});
+
+		// Getting history
+		p.history({
+	    	channel: channel,
+	    	callback: function(m){
+	    		led_flag = JSON.stringify(m[0][0].led);
+	    		ir_flag = JSON.stringify(m[0][0].ir);
+	    		update_interface();
+	    		update_light();
+	    	},
+	    	count: 1, // 100 is the default
+	    	reverse: false // false is the default
+	 	});
+
+	 	// Update IR status
+	 	function update_interface() {
+	 		if (ir_flag == '0') {
+		    	document.getElementById("ir").innerHTML = "<div style='color:blue'>Object Detected.</div>";
+		    } else if (ir_flag == '1') {
+		    	document.getElementById("ir").innerHTML = "<div style='color:gray'>No Object Detected.";
+		    }
+		}
+
+		// Update LED status
+		function update_light() {
+		    if (led_flag == '0') {
+		    	document.getElementById("imageid").src="lights off.jpg";
+		    } else if(led_flag == '1') {
+		    	document.getElementById("imageid").src="lights on.jpg";
+		    }
+	 	}
+
+		// Sending data
+		function led_toggle() {
+			if (led_flag == 1) {
+				led_flag = 0;
+				} else {
+					led_flag = 1;
+				}
+			if (led_flag == 1) {
+				if (ir_flag == 0) {
+			    	p.publish({
+			      		channel : channel, 
+			      		message : {led: 1, ir: 0}
+			    	});
+			    } else {
+			    	p.publish({
+			      		channel : channel, 
+			      		message : {led: 1, ir: 1}
+			    	});
+			    }
+			} else {
+				if (ir_flag == 0) {
+			    	p.publish({
+			      		channel : channel, 
+			      		message : {led: 0, ir: 0}
+			    	});
+			    } else {
+			    	p.publish({
+			      		channel : channel, 
+			      		message : {led: 0, ir: 1}
+			    	});
+			    }
+			}
+			update_light();
+	    }
+
+	    // Adding click event
+		button.addEventListener('click', led_toggle);
+		 
+		// Receiving data
+	    p.subscribe({
+		    channel: channel,
+		    presence: function(m){document.writeln(JSON.stringify(m.ir))},
+		    message: function(m){
+		    	ir_flag = JSON.stringify(m.ir);
+		    	update_interface();
+		    }
+		});
+	</script>
+	</body>
+
+</html>
