@@ -2,6 +2,7 @@ import threading
 import RPi.GPIO as GPIO
 import time
 import sys
+import smtplib
 from pubnub import Pubnub
 from threading import Thread
 
@@ -83,9 +84,29 @@ def func_publish():
             if(GPIO.input(IR_PIN) == 1):
                 pubnub.publish(channel, data1, callback=callback2, error=callback1)
                 flag = 0
-        time.sleep(0.2) 
+        time.sleep(0.2)
+
+# send an email notification to the desired email
+def notify_by_mail():
+
+    print 'Starting SMTP...'
+    subject = 'IoT Notification'
+    content = 'This email is a test for sending an email from a pyhton code.\nTarek'
+    message = 'Subject: %s\n\n%s' % (subject, content)
+    mail = smtplib.SMTP('smtp.gmail.com:587')
+    mail.ehlo()
+    print 'Starting TLS...'
+    mail.starttls()
+    print 'Logging in...'
+    mail.login('iothomeauto@gmail.com','helloworld1')
+    print 'Sending email...'
+    # insert desired email to send to in the second parameter
+    mail.sendmail('iothomeauto@gmail.com','<send-to>', message)
+    mail.close()
+    print 'email sent.'
 
 # main function which runs the two threads at the same time
 if __name__ == '__main__':
     Thread(target = func_recieve).start()
     Thread(target = func_publish).start()
+    notify_by_mail()
