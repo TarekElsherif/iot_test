@@ -25,13 +25,14 @@ def perform_det():
 
     print "Found {0} faces!".format(len(faces))
 
-    # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
         # Crops face
         crop_img = image[y:y+112, x:x+92]
         cv2.imwrite("test_faces/face.jpg", crop_img)
         cv2.imshow("Cropped face", crop_img)
-        # cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        # Draws rectangle
+        cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 1)
+        cv2.imwrite("captured/test.jpg", image)
 
     return len(faces)
 

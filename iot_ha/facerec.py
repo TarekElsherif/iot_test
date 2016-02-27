@@ -21,9 +21,10 @@ def prepare_image(filename):
 # run through test images (usually one)
 def perform_rec():
 
+    num_files = sum([len(files) for r, d, files in os.walk('train_faces/')])
     IMG_RES = 92 * 112 # img resolution
-    NUM_EIGENFACES = 6 # images per train person
-    NUM_TRAINIMAGES = 86 # total images in training set
+    NUM_EIGENFACES = 10 # images per train person
+    NUM_TRAINIMAGES = num_files - 1 # total images in training set
 
     #loading training set from folder train_faces
     folders = glob.glob('train_faces/*')

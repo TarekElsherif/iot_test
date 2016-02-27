@@ -36,16 +36,20 @@ def face_rec():
     print 'Initiating face recognition...'
     result = facerec.perform_rec()
     print 'Face recognition complete.'
+    if result['dist'] > 2:
+        return "Unknown"
     return lookup(result['ident'])
 
 # Performs the three steps (capture, detect face, and recognize face)
 def identify():
 
     capture()
-    face_detect()
-    return face_rec()
+    if not face_detect():
+        return face_rec()
+    else:
+        return "No person detected."
     
-if __name__ == '__main__':
-
-    per = identify()
-    print "===\nPerson identified: " + per                
+##if __name__ == '__main__':
+##
+##    per = identify()
+##    print "===\nPerson identified: " + per                
