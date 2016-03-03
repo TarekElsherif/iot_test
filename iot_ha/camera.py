@@ -3,6 +3,7 @@ import sys
 import time
 import subprocess
 import picamera
+import picamera.array
 import facerec
 import facedet
 
@@ -38,13 +39,13 @@ def capture(pi_module):
 # Detects and crops out face(s) in the captured image
 def face_detect():
 
-    print 'Detecting faces...'
+    print 'Detecting face...'
     faces = facedet.perform_det()
     if faces > 0:
         print 'Face detection complete.'
         return False
     else:
-        print 'No faces detected.'
+        print 'No face detected.'
         return True
 
 # Identifies the person
@@ -75,6 +76,7 @@ def identify():
     else:
         return "No person detected."
 
+# Displays real-time feed for 10 seconds
 def preview():
 
     print 'Starting camera preview...'
