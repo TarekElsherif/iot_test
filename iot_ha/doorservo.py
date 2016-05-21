@@ -8,6 +8,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
 pwm = GPIO.PWM(18, 100)
 pwm.start(5)
+locked = False
 
 ##pubnub = Pubnub(publish_key='pub-c-df137065-b5ca-4b1d-841a-3f547ec9b6f0',
 ##                    subscribe_key='sub-c-875a6a50-d26d-11e5-b684-02ee2ddab7fe')
@@ -24,12 +25,12 @@ def _callback(m, channel):
     if m['lock'] == 1:
         servo(90)
     if m['lock'] == 0:  
-        servo(0)
+        servo(180)
 
-def lock:
+def lock():
     servo(90)
 
-def unlock:
+def unlock():
     servo(0)
 
 def _error(m):
