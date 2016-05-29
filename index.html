@@ -67,24 +67,24 @@
 				if (ir_flag == 0) {
 			    	p.publish({
 			      		channel : channel, 
-			      		message : {led: 1, ir: 0}
+			      		message : {led: 1, ir: 0, lock: 0, occ:0}
 			    	});
 			    } else {
 			    	p.publish({
 			      		channel : channel, 
-			      		message : {led: 1, ir: 1}
+			      		message : {led: 1, ir: 1, lock: 0, occ:0}
 			    	});
 			    }
 			} else {
 				if (ir_flag == 0) {
 			    	p.publish({
 			      		channel : channel, 
-			      		message : {led: 0, ir: 0}
+			      		message : {led: 0, ir: 0, lock: 0, occ:0}
 			    	});
 			    } else {
 			    	p.publish({
 			      		channel : channel, 
-			      		message : {led: 0, ir: 1}
+			      		message : {led: 0, ir: 1, lock: 0, occ:0}
 			    	});
 			    }
 			}
