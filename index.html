@@ -41,9 +41,9 @@
 	 	// Update IR status
 	 	function update_interface() {
 	 		if (ir_flag == '0') {
-		    	document.getElementById("ir").innerHTML = "<div style='color:blue'>Object Detected.</div>";
+		    	document.getElementById("ir").innerHTML = "<div style='color:blue'>Door is Closed.</div>";
 		    } else if (ir_flag == '1') {
-		    	document.getElementById("ir").innerHTML = "<div style='color:gray'>No Object Detected.";
+		    	document.getElementById("ir").innerHTML = "<div style='color:gray'>Door is Open.</div>";
 		    }
 		}
 
